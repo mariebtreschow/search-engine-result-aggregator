@@ -2,7 +2,7 @@ const _ = require('lodash');
 const cheerio = require('cheerio');
 const request = require('request-promise');
 
-const VALID_SEARCH_ENGINES = ['google', 'yahoo']; // check for capital letters
+const VALID_SEARCH_ENGINES = ['google', 'yahoo'];
 const HTTP = 'http';
 
 const addElement = (title, source, url) => {
@@ -24,7 +24,6 @@ const getGoogleResponse = query => new Promise((resolve, reject) => {
             let t = $(title).text();
             results.push(addElement(t, 'Google'));
          });
-
         $('cite').map((_,url) => {
             let u = $(url).text();
             urls.push(u);
@@ -58,9 +57,10 @@ const getYahooResponse = query => new Promise((resolve, reject) => {
          });
          $('a').map((_,url) => {
             let u = $(url).text();
-            console.log(u)
             urls.push(u);
         });
+        // TODO: get href link from a tag in span
+        
          // results = results.map((value, index) => {
          //    if (value.url === undefined && urls[index]) {
          //        let url = urls[index]
@@ -90,7 +90,7 @@ const validateKeyword = keyword => {
     return _.isString(keyword);
 }
 
-const uniqueTitle = arrayOfTitles => {
+const findDuplicatedTitles = arrayOfTitles => {
     let duplicatedTitels = [];
     var report = arrayOfTitles.reduce(function(obj, b) {
       obj[b] = ++obj[b] || 1;
@@ -110,7 +110,7 @@ const paresResponse = arrays => {
 
     let combinedResult = _.compact(array1.concat(array2));
     let getAllTitles = combinedResult.map(item => item.title);
-    let duplicatedTitels = uniqueTitle(getAllTitles);
+    let duplicatedTitels = findDuplicatedTitles(getAllTitles);
     let foundIndexes = [];
 
     _.each(duplicatedTitels, (duplicatedTitle) => {
@@ -122,7 +122,7 @@ const paresResponse = arrays => {
     _.each(combinedResult, (result) => {
         _.each(duplicatedTitels, (duplicatedTitle) => {
             if (result.title === duplicatedTitle) {
-                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo');
+                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo'); // TODO: hardcoded
                 result.source.push(engine)
             }
         });
