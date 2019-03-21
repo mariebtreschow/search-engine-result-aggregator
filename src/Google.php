@@ -38,8 +38,6 @@ class Google
             $getUrl = $h3Tag->parentNode->getElementsByTagName('cite')->item(0);
             $url = $getUrl->nodeValue;
             if (!is_null($url)) {  // if url is not null
-                $this->results->createResultItem("https://www.horses.nl/", "Horses.nl - Het laatste nieuws uit de paardenwereld", 'yahoo');
-
                 $this->results->createResultItem($url, $title, 'google');
             }
         }
