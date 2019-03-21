@@ -36,7 +36,7 @@ class Yahoo
         foreach ($h3Tags as $h3Tag) {
             $titel = $h3Tag->nodeValue;
             $aTag = $h3Tag->getElementsByTagName('a')->item(0);
-            $url = $aTag->attributes->getNamedItem('href')->value;
+            $url = $aTag->attributes->getNamedItem('href')->value; // not working
             if (!is_null($url)) {  // if url is not null
                 $this->results->createResultItem($url, $title, 'yahoo');
             }
