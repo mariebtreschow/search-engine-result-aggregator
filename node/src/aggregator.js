@@ -59,8 +59,8 @@ const getYahooResponse = query => new Promise((resolve, reject) => {
             let u = $(url).text();
             urls.push(u);
         });
-        // TODO: get href link from a tag in span
-        
+        // TODO: get href link from a tag in span and put the mapping in separet method
+
          // results = results.map((value, index) => {
          //    if (value.url === undefined && urls[index]) {
          //        let url = urls[index]
@@ -90,6 +90,8 @@ const validateKeyword = keyword => {
     return _.isString(keyword);
 }
 
+
+// TODO: simplify
 const findDuplicatedTitles = arrayOfTitles => {
     let duplicatedTitels = [];
     var report = arrayOfTitles.reduce(function(obj, b) {
@@ -104,6 +106,7 @@ const findDuplicatedTitles = arrayOfTitles => {
     return duplicatedTitels;
 }
 
+// TODO: simplify
 const paresResponse = arrays => {
     let array1 = arrays[0];
     let array2 = arrays[1];
