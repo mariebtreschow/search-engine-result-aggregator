@@ -56,10 +56,11 @@ const getYahooResponse = query => new Promise((resolve, reject) => {
             let t = $(title).text();
             results.push(addElement(t, 'Yahoo'));
          });
-         $('href').map((_,url) => {
-             let u = $(url).text();
-             urls.push(u);
-         });
+         $('a').map((_,url) => {
+            let u = $(url).text();
+            console.log(u)
+            urls.push(u);
+        });
          // results = results.map((value, index) => {
          //    if (value.url === undefined && urls[index]) {
          //        let url = urls[index]
