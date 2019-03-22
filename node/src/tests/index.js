@@ -19,7 +19,7 @@ describe('Should be able to extract title and url from google and yahoo search e
         assert.isTrue(aggregator.validateKeyword(string));
         done();
     });
-    it('should be able to get a response from google and yahoo only', (done) => {
+    it('should be able to get a response from google and yahoo for keyword Horse', (done) => {
         aggregator.search(['Google', 'Yahoo'], 'Horse').then((results) => {
             const unique = [...new Set(results.map(item => item.url))];
             assert.isTrue(unique.length === results.length, 'list of results should only have unique values');
@@ -34,7 +34,7 @@ describe('Should be able to extract title and url from google and yahoo search e
             done();
         });
     }).timeout(10000);
-    it('should be able to get a response from google and yahoo only', (done) => {
+    it('should be able to get a response from google and yahoo for keyword Amsterdam', (done) => {
         aggregator.search(['Google', 'Yahoo'], 'Amsterdam').then((results) => {
             const unique = [...new Set(results.map(item => item.url))];
             assert.isTrue(unique.length === results.length, 'list of results should only have unique values');

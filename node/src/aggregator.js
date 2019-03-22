@@ -85,7 +85,6 @@ const validateKeyword = keyword => {
     return _.isString(keyword);
 };
 
-// TODO: simplify
 const findDuplicatedUrls = arrayOfTitles => {
     let duplicatedUrls = [];
     var report = arrayOfTitles.reduce((obj, b) => {
@@ -100,7 +99,8 @@ const findDuplicatedUrls = arrayOfTitles => {
     return duplicatedUrls;
 };
 
-const paresResponse = arrays => {
+// TODO: simplify
+const removeDuplicatedResults = arrays => {
     let google = arrays[0];
     let yahoo = arrays[1];
 
@@ -118,7 +118,6 @@ const paresResponse = arrays => {
     _.each(combinedResult, (result) => {
         _.each(duplicatedUrls, (url) => {
             if (result.url === url) {
-                 // TODO: fix - hardcoded
                 let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo');
                 result.source.push(engine);
             }
@@ -142,7 +141,7 @@ module.exports = {
                 promises.push(getYahooResponse(keyword))
             }
             return Promise.all(promises).then((values) => {
-                return paresResponse(values);
+                return removeDuplicatedResults(values);
             });
         } else {
             reject('Not a valid search enginge or keyword');
