@@ -85,42 +85,41 @@ const validateKeyword = keyword => {
     return _.isString(keyword);
 };
 
-
 // TODO: simplify
-const findDuplicatedTitles = arrayOfTitles => {
-    let duplicatedTitels = [];
+const findDuplicatedUrls = arrayOfTitles => {
+    let duplicatedUrls = [];
     var report = arrayOfTitles.reduce((obj, b) => {
       obj[b] = ++obj[b] || 1;
       return obj;
     }, {});
      _.filter(report, (values, key) => {
         if (values > 1) {
-            duplicatedTitels.push(key);
+            duplicatedUrls.push(key);
         }
     });
-    return duplicatedTitels;
+    return duplicatedUrls;
 };
 
-// TODO: simplify
 const paresResponse = arrays => {
     let google = arrays[0];
     let yahoo = arrays[1];
 
     let combinedResult = _.compact(google.concat(yahoo));
-    let getAllTitles = combinedResult.map(item => item.title);
-    let duplicatedTitels = findDuplicatedTitles(getAllTitles);
+    let urlsOnly = combinedResult.map(item => item.url);
+    let duplicatedUrls = findDuplicatedUrls(urlsOnly);
     let foundIndexes = [];
 
-    _.each(duplicatedTitels, (duplicatedTitle) => {
-        foundIndexes.push(_.findIndex(combinedResult, ['title', duplicatedTitle]));
+    _.each(duplicatedUrls, (url) => {
+        foundIndexes.push(_.findIndex(combinedResult, ['url', url]));
     });
     _.each(foundIndexes, (i) => {
         combinedResult.splice(i, 1);
     });
     _.each(combinedResult, (result) => {
-        _.each(duplicatedTitels, (duplicatedTitle) => {
-            if (result.title === duplicatedTitle) {
-                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo'); // TODO: fix - hardcoded
+        _.each(duplicatedUrls, (url) => {
+            if (result.url === url) {
+                 // TODO: fix - hardcoded
+                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo');
                 result.source.push(engine);
             }
         });
