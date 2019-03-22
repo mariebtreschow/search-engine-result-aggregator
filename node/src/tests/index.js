@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const assert = require('chai').assert;
 const aggregator = require('../aggregator.js');
 
@@ -35,7 +34,7 @@ describe('Should be able to extract title and url from google and yahoo search e
         aggregator.search(['Google', 'Yahoo'], 'Horse').then((results) => {
             const unique = [...new Set(results.map(item => item.url))];
             assert.isTrue(unique.length === results.length, 'list of results should only have unique values');
-            _.each(results, (result) => {
+            results.forEach((result) => {
                 assert.property(result, 'title', 'should include title');
                 assert.property(result, 'source', 'should include source');
                 assert.property(result, 'url', 'should include url');
@@ -50,7 +49,7 @@ describe('Should be able to extract title and url from google and yahoo search e
         aggregator.search(['Google', 'Yahoo'], 'Amsterdam').then((results) => {
             const unique = [...new Set(results.map(item => item.url))];
             assert.isTrue(unique.length === results.length, 'list of results should only have unique values');
-            _.each(results, (result) => {
+            results.forEach((result) => {
                 assert.property(result, 'title', 'should include title');
                 assert.property(result, 'source', 'should include source');
                 assert.property(result, 'url', 'should include url');

@@ -73,8 +73,8 @@ const validateSearchEngines = searchEngines => {
     if (searchEngines.length > 2) {
         isValid = false;
     }
-    _.each(searchEngines, (engine) => {
-        if (!_.isString(engine) || !_.includes(VALID_SEARCH_ENGINES, engine.toLowerCase())) {
+    searchEngines.forEach((engine) => {
+        if ((typeof engine !== 'string') || !VALID_SEARCH_ENGINES.includes(engine.toLowerCase())) {
             isValid = false;
         }
     });
@@ -82,7 +82,7 @@ const validateSearchEngines = searchEngines => {
 };
 
 const validateKeyword = keyword => {
-    return _.isString(keyword);
+    return typeof keyword === 'string';
 };
 
 const findDuplicatedUrls = arrayOfTitles => {
@@ -109,14 +109,14 @@ const removeDuplicatedResults = arrays => {
     let duplicatedUrls = findDuplicatedUrls(urlsOnly);
     let foundIndexes = [];
 
-    _.each(duplicatedUrls, (url) => {
+    duplicatedUrls.forEach((url) => {
         foundIndexes.push(_.findIndex(combinedResult, ['url', url]));
     });
-    _.each(foundIndexes, (i) => {
+    foundIndexes.forEach((i) => {
         combinedResult.splice(i, 1);
     });
-    _.each(combinedResult, (result) => {
-        _.each(duplicatedUrls, (url) => {
+    combinedResult.forEach((result) => {
+        duplicatedUrls.forEach((url) => {
             if (result.url === url) {
                 let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo');
                 result.source.push(engine);
