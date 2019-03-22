@@ -7,7 +7,7 @@ const GOOGLE_BASE_URL = 'https://www.google.com/search?q=';
 const YAHOO_BASE_URL = 'https://search.yahoo.com/search?q=';
 const HTTP = 'http';
 
-const validateSearchEngines = searchEngines => {
+const validateSearchEngines = (searchEngines) => {
     let isValid = true;
     if (searchEngines.length > 2) {
         isValid = false;
@@ -20,7 +20,7 @@ const validateSearchEngines = searchEngines => {
     return isValid;
 };
 
-const validateKeyword = keyword => {
+const validateKeyword = (keyword) => {
     return typeof keyword === 'string';
 };
 
@@ -37,7 +37,7 @@ const refactorSearchEngineResponse = (titles, urls) => {
     });
 };
 
-const getGoogleResponse = query => new Promise((resolve, reject) => {
+const getGoogleResponse = (query) => new Promise((resolve, reject) => {
     const options = {
         uri: GOOGLE_BASE_URL + query,
         resolveWithFullResponse: true,
@@ -87,9 +87,9 @@ const getYahooResponse = query => new Promise((resolve, reject) => {
     });
 });
 
-const findDuplicatedUrls = arrayOfTitles => {
+const findDuplicatedUrls = (urls) => {
     let duplicatedUrls = [];
-    var report = arrayOfTitles.reduce((obj, b) => {
+    var report = urls.reduce((obj, b) => {
       obj[b] = ++obj[b] || 1;
       return obj;
     }, {});
@@ -102,7 +102,7 @@ const findDuplicatedUrls = arrayOfTitles => {
 };
 
 // TODO: simplify
-const parseAndRemoveDuplicatedResults = arrays => {
+const parseAndRemoveDuplicatedResults = (arrays) => {
     let google = arrays[0];
     let yahoo = arrays[1];
 
@@ -128,7 +128,7 @@ const parseAndRemoveDuplicatedResults = arrays => {
     return combinedResult;
 };
 
-const search = ( searchEngines, keyword ) => {
+const search = (searchEngines, keyword) => {
     if (validateSearchEngines(searchEngines) && validateKeyword(keyword)) {
         let search = searchEngines.map(engine => engine.toLowerCase());
         const promises  = [];
