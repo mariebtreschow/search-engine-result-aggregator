@@ -3,6 +3,8 @@ const cheerio = require('cheerio');
 const request = require('request-promise');
 
 const VALID_SEARCH_ENGINES = ['google', 'yahoo'];
+const GOOGLE_BASE_URL = 'https://www.google.com/search?q=';
+const YAHOO_BASE_URL = 'https://search.yahoo.com/search?q=';
 const HTTP = 'http';
 
 const validateSearchEngines = searchEngines => {
@@ -37,7 +39,7 @@ const refactorSearchEngineResponse = (titles, urls) => {
 
 const getGoogleResponse = query => new Promise((resolve, reject) => {
     const options = {
-        uri: `https://www.google.com/search?q=${query}`,
+        uri: GOOGLE_BASE_URL + query,
         resolveWithFullResponse: true,
         transform: (body) => {
             return cheerio.load(body);
@@ -62,7 +64,7 @@ const getGoogleResponse = query => new Promise((resolve, reject) => {
 
 const getYahooResponse = query => new Promise((resolve, reject) => {
     const options = {
-        uri: `https://search.yahoo.com/search?q=${query}`,
+        uri: YAHOO_BASE_URL + query,
         resolveWithFullResponse: true,
         transform: (body) => {
             return cheerio.load(body);
