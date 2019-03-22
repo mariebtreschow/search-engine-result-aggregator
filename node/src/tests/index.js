@@ -8,7 +8,7 @@ describe('Should be able to extract title and url from google and yahoo search e
         assert.isTrue(aggregator.validateSearchEngines(array));
         done();
     });
-    it('should return error message when trying to search using bing', (done) => {
+    it('should return error message when trying to search using bing for now', (done) => {
         let array = ['google', 'bing'];
         let errorMessage = {
             error: 'Validation error',

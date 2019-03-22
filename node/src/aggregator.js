@@ -35,36 +35,39 @@ const refactorSearchEngineResponse = (titles, urls) => {
     });
 };
 
-const getGoogleResponse = (query) => new Promise((resolve, reject) => {
+const requestSearchEngine = (url, query) => new Promise((resolve, reject) => {
     const options = {
-        uri: GOOGLE_BASE_URL + query,
+        uri: url + query,
         resolveWithFullResponse: true,
         transform: (body) => (cheerio.load(body))
-    };
+    }
     return request(options).then(($) => {
-        let titles = [];
-        let urls = [];
+        resolve($);
+    }).catch((error) => {
+        reject(error);
+    });
+});
+
+const getGoogleResponse = (query) => new Promise((resolve, reject) => {
+    let titles = [];
+    let urls = [];
+    requestSearchEngine(GOOGLE_BASE_URL, query).then(($) => {
         $('h3').map((_,title) => {
             titles.push(addElement($(title).text(), 'Google'));
          });
         $('cite').map((_,url) => {
             urls.push($(url).text());
         });
-         resolve(refactorSearchEngineResponse(titles, urls));
+        resolve(refactorSearchEngineResponse(titles, urls));
     }).catch((error) => {
         reject(error);
     });
 });
 
 const getYahooResponse = (query) => new Promise((resolve, reject) => {
-    const options = {
-        uri: YAHOO_BASE_URL + query,
-        resolveWithFullResponse: true,
-        transform: (body) => (cheerio.load(body))
-    };
-    return request(options).then(($) => {
-        let titles = [];
-        let urls = [];
+    let titles = [];
+    let urls = [];
+    requestSearchEngine(YAHOO_BASE_URL, query).then(($) => {
         $('h3').map((_,title) => {
             titles.push(addElement($(title).text(), 'Yahoo'));
          });
