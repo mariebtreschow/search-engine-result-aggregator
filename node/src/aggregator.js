@@ -20,9 +20,7 @@ const validateSearchEngines = (searchEngines) => {
     return isValid;
 };
 
-const validateKeyword = (keyword) => {
-    return typeof keyword === 'string';
-};
+const validateKeyword = (keyword) => (typeof keyword === 'string');
 
 const addElement = (title, source, url) => {
     return {title: title, url: url, source: [source]};
@@ -41,20 +39,16 @@ const getGoogleResponse = (query) => new Promise((resolve, reject) => {
     const options = {
         uri: GOOGLE_BASE_URL + query,
         resolveWithFullResponse: true,
-        transform: (body) => {
-            return cheerio.load(body);
-        }
+        transform: (body) => (cheerio.load(body))
     };
     return request(options).then(($) => {
         let titles = [];
         let urls = [];
         $('h3').map((_,title) => {
-            let t = $(title).text();
-            titles.push(addElement(t, 'Google'));
+            titles.push(addElement($(title).text(), 'Google'));
          });
         $('cite').map((_,url) => {
-            let u = $(url).text();
-            urls.push(u);
+            urls.push($(url).text());
         });
          resolve(refactorSearchEngineResponse(titles, urls));
     }).catch((error) => {
@@ -62,24 +56,20 @@ const getGoogleResponse = (query) => new Promise((resolve, reject) => {
     });
 });
 
-const getYahooResponse = query => new Promise((resolve, reject) => {
+const getYahooResponse = (query) => new Promise((resolve, reject) => {
     const options = {
         uri: YAHOO_BASE_URL + query,
         resolveWithFullResponse: true,
-        transform: (body) => {
-            return cheerio.load(body);
-        }
+        transform: (body) => (cheerio.load(body))
     };
     return request(options).then(($) => {
         let titles = [];
         let urls = [];
         $('h3').map((_,title) => {
-            let t = $(title).text();
-            titles.push(addElement(t, 'Yahoo'));
+            titles.push(addElement($(title).text(), 'Yahoo'));
          });
         $('h3').find('a').each((index, link) => {
-            let u = $(link).attr("href");
-            urls.push(u);
+            urls.push($(link).attr('href'));
         });
         resolve(refactorSearchEngineResponse(titles, urls));
      }).catch((error) => {
