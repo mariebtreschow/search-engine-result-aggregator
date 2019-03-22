@@ -22,15 +22,15 @@ describe('Should be able to extract title and url from google and yahoo search e
     it('should be able to get a response from google and yahoo only', (done) => {
         aggregator.search(['Google', 'Yahoo'], 'Horse').then((results) => {
             const unique = [...new Set(results.map(item => item.url))];
-            assert.isTrue(unique.length === results.length);
+            assert.isTrue(unique.length === results.length, 'list of results should only have unique values');
             _.each(results, (result) => {
-                assert.property(result, 'title');
-                assert.property(result, 'source');
-                assert.property(result, 'url');
-                assert.isArray(result.source);
-                assert.isObject(result);
+                assert.property(result, 'title', 'should include title');
+                assert.property(result, 'source', 'should include source');
+                assert.property(result, 'url', 'should include url');
+                assert.isArray(result.source, 'source should be an array');
+                assert.isObject(result, 'each result is an object');
             });
-            assert.isArray(results);
+            assert.isArray(results, 'list of results must be in an array');
             done();
         });
     }).timeout(10000);
