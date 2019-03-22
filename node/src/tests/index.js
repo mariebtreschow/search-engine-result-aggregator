@@ -11,9 +11,13 @@ describe('Should be able to extract title and url from google and yahoo search e
     });
     it('should only be able to search for google and yahoo', (done) => {
         let array = ['google', 'bing'];
+        let errorMessage = {
+            error: 'Validation error',
+            message: 'Not a valid search engine or keyword was not a string'
+        };
         aggregator.search(array).then(() => {
         }).catch((error) => {
-            assert.equal(error, 'Not a valid search enginge or keyword');
+            assert.deepEqual(error, errorMessage);
         });
         done();
     });

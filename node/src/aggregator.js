@@ -143,7 +143,10 @@ module.exports = {
                 return removeDuplicatedResults(values);
             });
         } else {
-            return Promise.reject('Not a valid search enginge or keyword');
+            return Promise.reject({
+                error: 'Validation error',
+                message: 'Not a valid search engine or keyword was not a string'
+            });
         }
 
     }
