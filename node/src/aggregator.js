@@ -9,32 +9,35 @@ const addElement = (title, source, url) => {
     return {title: title, url: url, source: [source]};
 };
 
+const refactorSearchEngineResponse = (titles, urls) => {
+    return titles.map((value, index) => {
+        if (value.url === undefined && urls[index]) {
+            let url = urls[index]
+            return {...value, url};
+        }
+    });
+};
+
 const getGoogleResponse = query => new Promise((resolve, reject) => {
     const options = {
         uri: `https://www.google.com/search?q=${query}`,
         resolveWithFullResponse: true,
-        transform: function (body) {
+        transform: (body) => {
             return cheerio.load(body);
         }
     };
     return request(options).then(($) => {
-        let results = [];
+        let titles = [];
         let urls = [];
         $('h3').map((_,title) => {
             let t = $(title).text();
-            results.push(addElement(t, 'Google'));
+            titles.push(addElement(t, 'Google'));
          });
         $('cite').map((_,url) => {
             let u = $(url).text();
             urls.push(u);
         });
-        results = results.map((value, index) => {
-           if (value.url === undefined && urls[index]) {
-               let url = urls[index]
-              return {...value, url};
-          }
-          });
-         resolve(results);
+         resolve(refactorSearchEngineResponse(titles, urls));
     }).catch((error) => {
         reject(error);
     });
@@ -44,28 +47,22 @@ const getYahooResponse = query => new Promise((resolve, reject) => {
     const options = {
         uri: `https://search.yahoo.com/search?q=${query}`,
         resolveWithFullResponse: true,
-        transform: function (body) {
+        transform: (body) => {
             return cheerio.load(body);
         }
     };
     return request(options).then(($) => {
-        let results = [];
+        let titles = [];
         let urls = [];
         $('h3').map((_,title) => {
             let t = $(title).text();
-            results.push(addElement(t, 'Yahoo'));
+            titles.push(addElement(t, 'Yahoo'));
          });
         $('h3').find('a').each((index, link) => {
             let u = $(link).attr("href");
             urls.push(u);
         });
-        results = results.map((value, index) => {
-            if (value.url === undefined && urls[index]) {
-                let url = urls[index]
-                return {...value, url};
-            }
-          });
-         resolve(results);
+        resolve(refactorSearchEngineResponse(titles, urls));
      }).catch((error) => {
         reject(error);
     });
@@ -86,13 +83,13 @@ const validateSearchEngines = searchEngines => {
 
 const validateKeyword = keyword => {
     return _.isString(keyword);
-}
+};
 
 
 // TODO: simplify
 const findDuplicatedTitles = arrayOfTitles => {
     let duplicatedTitels = [];
-    var report = arrayOfTitles.reduce(function(obj, b) {
+    var report = arrayOfTitles.reduce((obj, b) => {
       obj[b] = ++obj[b] || 1;
       return obj;
     }, {});
@@ -102,14 +99,14 @@ const findDuplicatedTitles = arrayOfTitles => {
         }
     });
     return duplicatedTitels;
-}
+};
 
 // TODO: simplify
 const paresResponse = arrays => {
-    let array1 = arrays[0];
-    let array2 = arrays[1];
+    let google = arrays[0];
+    let yahoo = arrays[1];
 
-    let combinedResult = _.compact(array1.concat(array2));
+    let combinedResult = _.compact(google.concat(yahoo));
     let getAllTitles = combinedResult.map(item => item.title);
     let duplicatedTitels = findDuplicatedTitles(getAllTitles);
     let foundIndexes = [];
@@ -124,7 +121,7 @@ const paresResponse = arrays => {
         _.each(duplicatedTitels, (duplicatedTitle) => {
             if (result.title === duplicatedTitle) {
                 let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo'); // TODO: fix - hardcoded
-                result.source.push(engine)
+                result.source.push(engine);
             }
         });
     });
@@ -134,7 +131,7 @@ const paresResponse = arrays => {
 module.exports = {
     validateKeyword: validateKeyword,
     validateSearchEngines: validateSearchEngines,
-    search: function(searchEngines, keyword) {
+    search: (searchEngines, keyword) => {
 
         if (validateSearchEngines(searchEngines) && validateKeyword(keyword)) {
             searchEngines = searchEngines.map(engine => engine.toLowerCase());
