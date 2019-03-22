@@ -55,18 +55,16 @@ const getYahooResponse = query => new Promise((resolve, reject) => {
             let t = $(title).text();
             results.push(addElement(t, 'Yahoo'));
          });
-         $('a').map((_,url) => {
-            let u = $(url).text();
+        $('h3').find('a').each((index, link) => {
+            let u = $(link).attr("href");
             urls.push(u);
         });
-        // TODO: get href link from a tag in span and put the mapping in separet method
-
-         // results = results.map((value, index) => {
-         //    if (value.url === undefined && urls[index]) {
-         //        let url = urls[index]
-         //       return {...value, url};
-         //     }
-         //  });
+        results = results.map((value, index) => {
+            if (value.url === undefined && urls[index]) {
+                let url = urls[index]
+                return {...value, url};
+            }
+          });
          resolve(results);
      }).catch((error) => {
         reject(error);
@@ -125,7 +123,7 @@ const paresResponse = arrays => {
     _.each(combinedResult, (result) => {
         _.each(duplicatedTitels, (duplicatedTitle) => {
             if (result.title === duplicatedTitle) {
-                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo'); // TODO: hardcoded
+                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo'); // TODO: fix - hardcoded
                 result.source.push(engine)
             }
         });

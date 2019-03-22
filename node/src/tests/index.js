@@ -21,6 +21,7 @@ describe('Should be able to extract title and url from google and yahoo search e
     });
     it('should be able to get a response from google and yahoo only', (done) => {
         aggregator.search(['Google', 'Yahoo'], 'Horse').then((results) => {
+            console.log(results)
             _.each(results, (result) => {
                 assert.property(result, 'title');
                 assert.property(result, 'source');
