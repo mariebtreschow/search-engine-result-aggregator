@@ -5,7 +5,6 @@ const request = require('request-promise');
 const VALID_SEARCH_ENGINES = ['google', 'yahoo'];
 const GOOGLE_BASE_URL = 'https://www.google.com/search?q=';
 const YAHOO_BASE_URL = 'https://search.yahoo.com/search?q=';
-const HTTP = 'http';
 
 const validateSearchEngines = (searchEngines) => {
     let isValid = true;
@@ -91,7 +90,6 @@ const findDuplicatedUrls = (urls) => {
     return duplicatedUrls;
 };
 
-// TODO: simplify
 const parseAndRemoveDuplicatedResults = (arrays) => {
     let google = arrays[0];
     let yahoo = arrays[1];
@@ -110,7 +108,8 @@ const parseAndRemoveDuplicatedResults = (arrays) => {
     combinedResult.forEach((result) => {
         duplicatedUrls.forEach((url) => {
             if (result.url === url) {
-                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo'); // fix this - hardcoded
+                let engine = (result.source[0] === 'Yahoo' ?
+                 'Google' : 'Yahoo'); // fix this - hardcoded
                 result.source.push(engine);
             }
         });
