@@ -132,12 +132,12 @@ module.exports = {
     search: (searchEngines, keyword) => {
 
         if (validateSearchEngines(searchEngines) && validateKeyword(keyword)) {
-            searchEngines = searchEngines.map(engine => engine.toLowerCase());
+            let search = searchEngines.map(engine => engine.toLowerCase());
             const promises  = [];
-            if (searchEngines.includes('google')) {
+            if (search.includes('google')) {
                 promises.push(getGoogleResponse(keyword))
             }
-            if (searchEngines.includes('yahoo')) {
+            if (search.includes('yahoo')) {
                 promises.push(getYahooResponse(keyword))
             }
             return Promise.all(promises).then((values) => {
@@ -148,4 +148,4 @@ module.exports = {
         }
 
     }
-}
+};
