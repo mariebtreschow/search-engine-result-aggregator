@@ -12,7 +12,8 @@ const validateSearchEngines = (searchEngines) => {
         isValid = false;
     }
     searchEngines.forEach((engine) => {
-        if ((typeof engine !== 'string') || !VALID_SEARCH_ENGINES.includes(engine.toLowerCase())) {
+        if ((typeof engine !== 'string')
+        || !VALID_SEARCH_ENGINES.includes(engine.toLowerCase())) {
             isValid = false;
         }
     });

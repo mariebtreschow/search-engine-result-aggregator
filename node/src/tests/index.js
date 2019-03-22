@@ -8,7 +8,7 @@ describe('Should be able to extract title and url from google and yahoo search e
         assert.isTrue(aggregator.validateSearchEngines(array));
         done();
     });
-    it('should only be able to search for google and yahoo', (done) => {
+    it('should return error message when trying to search using bing', (done) => {
         let array = ['google', 'bing'];
         let errorMessage = {
             error: 'Validation error',
@@ -51,7 +51,7 @@ describe('Should be able to extract title and url from google and yahoo search e
         });
     }).timeout(10000);
     it('should be able to get a response from google and yahoo for keyword Amsterdam', (done) => {
-        aggregator.search(['Google', 'Yahoo'], 'Amsterdam').then((results) => {
+        aggregator.search(['GOOGLE', 'Yahoo'], 'Amsterdam').then((results) => {
             const unique = [...new Set(results.map(item => item.url))];
             assert.isTrue(unique.length === results.length, 'list of results should only have unique values');
             results.forEach((result) => {
