@@ -118,7 +118,7 @@ const removeDuplicatedResults = arrays => {
     combinedResult.forEach((result) => {
         duplicatedUrls.forEach((url) => {
             if (result.url === url) {
-                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo');
+                let engine = (result.source[0] === 'Yahoo' ? 'Google' : 'Yahoo'); // fix this - hardcoded
                 result.source.push(engine);
             }
         });
