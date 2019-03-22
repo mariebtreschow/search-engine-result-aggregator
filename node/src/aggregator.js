@@ -126,28 +126,29 @@ const parseAndRemoveDuplicatedResults = arrays => {
     return combinedResult;
 };
 
-module.exports = {
-    validateKeyword: validateKeyword,
-    validateSearchEngines: validateSearchEngines,
-    search: (searchEngines, keyword) => {
-        if (validateSearchEngines(searchEngines) && validateKeyword(keyword)) {
-            let search = searchEngines.map(engine => engine.toLowerCase());
-            const promises  = [];
-            if (search.includes('google')) {
-                promises.push(getGoogleResponse(keyword))
-            }
-            if (search.includes('yahoo')) {
-                promises.push(getYahooResponse(keyword))
-            }
-            return Promise.all(promises).then((values) => {
-                return parseAndRemoveDuplicatedResults(values);
-            });
-        } else {
-            return Promise.reject({
-                error: 'Validation error',
-                message: 'Not a valid search engine or keyword was not a string'
-            });
+const search = ( searchEngines, keyword ) => {
+    if (validateSearchEngines(searchEngines) && validateKeyword(keyword)) {
+        let search = searchEngines.map(engine => engine.toLowerCase());
+        const promises  = [];
+        if (search.includes('google')) {
+            promises.push(getGoogleResponse(keyword))
         }
-
+        if (search.includes('yahoo')) {
+            promises.push(getYahooResponse(keyword))
+        }
+        return Promise.all(promises).then((values) => {
+            return parseAndRemoveDuplicatedResults(values);
+        });
+    } else {
+        return Promise.reject({
+            error: 'Validation error',
+            message: 'Not a valid search engine or keyword was not a string'
+        });
     }
+}
+
+module.exports = {
+    validateKeyword,
+    validateSearchEngines,
+    search,
 };
