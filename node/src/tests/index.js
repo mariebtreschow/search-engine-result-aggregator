@@ -25,9 +25,14 @@ describe('Should be able to extract title and url from google and yahoo search e
         assert.isFalse(aggregator.validateSearchEngines(array));
         done();
     });
-    it('should only be able to search for google and yahoo not bing', (done) => {
+    it('should only be able to search for string keywords', (done) => {
         let string = 'horse';
         assert.isTrue(aggregator.validateKeyword(string));
+        done();
+    });
+    it('should only be able to search for strings for arrays of strings', (done) => {
+        let array = ['horse'];
+        assert.isFalse(aggregator.validateKeyword(array));
         done();
     });
     it('should be able to get a response from google and yahoo for keyword Horse', (done) => {
