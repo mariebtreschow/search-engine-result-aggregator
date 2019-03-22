@@ -9,6 +9,14 @@ describe('Should be able to extract title and url from google and yahoo search e
         assert.isTrue(aggregator.validateSearchEngines(array));
         done();
     });
+    it('should only be able to search for google and yahoo', (done) => {
+        let array = ['google', 'bing'];
+        aggregator.search(array).then(() => {
+        }).catch((error) => {
+            assert.equal(error, 'Not a valid search enginge or keyword');
+        });
+        done();
+    });
     it('should only be able to search for google and yahoo not bing', (done) => {
         let array = ['bing', 'yahoo'];
         assert.isFalse(aggregator.validateSearchEngines(array));

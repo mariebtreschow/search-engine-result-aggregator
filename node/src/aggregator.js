@@ -130,7 +130,6 @@ module.exports = {
     validateKeyword: validateKeyword,
     validateSearchEngines: validateSearchEngines,
     search: (searchEngines, keyword) => {
-
         if (validateSearchEngines(searchEngines) && validateKeyword(keyword)) {
             let search = searchEngines.map(engine => engine.toLowerCase());
             const promises  = [];
@@ -144,7 +143,7 @@ module.exports = {
                 return removeDuplicatedResults(values);
             });
         } else {
-            reject('Not a valid search enginge or keyword');
+            return Promise.reject('Not a valid search enginge or keyword');
         }
 
     }
