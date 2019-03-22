@@ -20,14 +20,14 @@ class Yahoo
         $this->results = $results;
     }
 
-    public function search(string $query)
+    public function search(string $query): void
     {
         $rawResponse = $this->client->request('GET', self::BASE_URL_YAHOO, ['query' => 'q=' . $query]);
         $content = $rawResponse->getBody()->getContents();
         $this->parseResponseFromYahoo($content);
     }
 
-    private function parseResponseFromYahoo($responseBody)
+    private function parseResponseFromYahoo($responseBody): void
     {
         $dom = new \DOMDocument();
         @$dom->loadHTML($responseBody);

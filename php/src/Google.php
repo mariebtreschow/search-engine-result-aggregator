@@ -20,14 +20,14 @@ class Google
         $this->results = $results;
     }
 
-    public function search(string $query)
+    public function search(string $query): void
     {
         $rawResponse = $this->client->request('GET', self::BASE_URL_GOOGLE, ['query' => 'q=' . $query]);
         $content = $rawResponse->getBody()->getContents();
         $this->parseResponseFromGoogle($content);
     }
 
-    private function parseResponseFromGoogle($responseBody)
+    private function parseResponseFromGoogle($responseBody): void
     {
         $dom = new \DOMDocument();
         @$dom->loadHTML($responseBody);
