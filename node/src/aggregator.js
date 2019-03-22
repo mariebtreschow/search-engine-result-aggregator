@@ -5,6 +5,23 @@ const request = require('request-promise');
 const VALID_SEARCH_ENGINES = ['google', 'yahoo'];
 const HTTP = 'http';
 
+const validateSearchEngines = searchEngines => {
+    let isValid = true;
+    if (searchEngines.length > 2) {
+        isValid = false;
+    }
+    searchEngines.forEach((engine) => {
+        if ((typeof engine !== 'string') || !VALID_SEARCH_ENGINES.includes(engine.toLowerCase())) {
+            isValid = false;
+        }
+    });
+    return isValid;
+};
+
+const validateKeyword = keyword => {
+    return typeof keyword === 'string';
+};
+
 const addElement = (title, source, url) => {
     return {title: title, url: url, source: [source]};
 };
@@ -68,23 +85,6 @@ const getYahooResponse = query => new Promise((resolve, reject) => {
     });
 });
 
-const validateSearchEngines = searchEngines => {
-    let isValid = true;
-    if (searchEngines.length > 2) {
-        isValid = false;
-    }
-    searchEngines.forEach((engine) => {
-        if ((typeof engine !== 'string') || !VALID_SEARCH_ENGINES.includes(engine.toLowerCase())) {
-            isValid = false;
-        }
-    });
-    return isValid;
-};
-
-const validateKeyword = keyword => {
-    return typeof keyword === 'string';
-};
-
 const findDuplicatedUrls = arrayOfTitles => {
     let duplicatedUrls = [];
     var report = arrayOfTitles.reduce((obj, b) => {
@@ -100,7 +100,7 @@ const findDuplicatedUrls = arrayOfTitles => {
 };
 
 // TODO: simplify
-const removeDuplicatedResults = arrays => {
+const parseAndRemoveDuplicatedResults = arrays => {
     let google = arrays[0];
     let yahoo = arrays[1];
 
@@ -140,7 +140,7 @@ module.exports = {
                 promises.push(getYahooResponse(keyword))
             }
             return Promise.all(promises).then((values) => {
-                return removeDuplicatedResults(values);
+                return parseAndRemoveDuplicatedResults(values);
             });
         } else {
             return Promise.reject({
