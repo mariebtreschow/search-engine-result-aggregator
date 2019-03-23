@@ -18,12 +18,6 @@ class Aggregator
 
     public function useSearchEngine($searchEngineToAdd)
     {
-        foreach ($this->searchEngines as $existingEngine) {
-            if ($existingEngine == $searchEngineToAdd) { // check if already added
-                throw new Exception('You already added this search engine');
-            }
-        }
-        // add search enging
         $this->searchEngines[] = $searchEngineToAdd;
     }
 }
