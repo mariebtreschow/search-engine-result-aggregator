@@ -8,7 +8,7 @@ class Aggregator
 {
     private $searchEngines = [];
 
-    public function searchEngineForKeyword($queryString)
+    public function searchEnginesForKeyword($queryString)
     {
         foreach ($this->searchEngines as $validSearchEngine) {
             // use each search enging function search to search for keyword
