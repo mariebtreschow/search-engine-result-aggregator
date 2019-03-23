@@ -11,7 +11,6 @@ class Aggregator
     public function searchEnginesForKeyword($queryString)
     {
         foreach ($this->searchEngines as $validSearchEngine) {
-            // use each search enging function search to search for keyword
             $validSearchEngine->search($queryString);
         }
     }

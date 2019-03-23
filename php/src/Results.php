@@ -13,13 +13,7 @@ class Results extends \ArrayIterator
 
         $url = $resultItem->getUrl();
         // check intances of result item
-        if (!isset($this[$url])) {
-            $resultItem->addSources($source);
-            $this[$url] = $resultItem;
-            return;
-        } else {
-            $resultItem = $this[$url];
-            $resultItem->addSources($source);
-        }
+        // TODO: logic for not having duplicates
+
     }
 }

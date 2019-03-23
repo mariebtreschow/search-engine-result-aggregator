@@ -7,7 +7,7 @@ class ResultItem
     private $title;
     private $sources;
 
-    static $instances=array();
+    static $instances = array();
 
     public function url($url): void
     {
